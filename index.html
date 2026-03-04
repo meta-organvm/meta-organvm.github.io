@@ -3,41 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORGANVM: meta-organvm</title>
+    <title>ORGANVM: META-ORGANVM</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 2rem; background: #fdfdfd; }
-        h1 { border-bottom: 2px solid #eee; padding-bottom: 0.5rem; color: #000; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; margin-bottom: 0; }
-        .org-header { margin-bottom: 2.5rem; }
-        .org-header p { font-size: 1.1rem; color: #666; margin-top: 0.5rem; }
-        ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-        li { padding: 1.5rem; border-radius: 10px; background: #fff; border: 1px solid #eaecef; transition: all 0.25s ease; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; }
-        li:hover { transform: translateY(-4px); border-color: #0366d6; box-shadow: 0 12px 28px rgba(149, 157, 165, 0.15); }
-        a.repo-link { text-decoration: none; color: #0366d6; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.75rem; word-break: break-all; }
-        a.repo-link:hover { text-decoration: underline; }
-        .desc { font-size: 0.95rem; color: #586069; flex-grow: 1; margin-bottom: 1.5rem; }
-        .footer-meta { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-        .tag { font-size: 0.7rem; background: #f1f8ff; padding: 4px 12px; border-radius: 20px; color: #0366d6; border: 1px solid #c8e1ff; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        footer { margin-top: 5rem; padding-top: 2rem; border-top: 1px solid #eee; font-size: 0.85rem; color: #999; text-align: center; }
-        @media (max-width: 600px) { ul { grid-template-columns: 1fr; } }
+        :root { --primary: #0366d6; --bg: #f6f8fa; --text: #24292e; --border: #e1e4e8; --sidebar-bg: #ffffff; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: var(--text); margin: 0; display: flex; min-height: 100vh; background: var(--bg); }
+        
+        /* Sidebar Styles */
+        nav { width: 280px; background: var(--sidebar-bg); border-right: 1px solid var(--border); padding: 2rem 1.5rem; flex-shrink: 0; position: sticky; top: 0; height: 100vh; box-sizing: border-box; overflow-y: auto; }
+        nav h2 { font-size: 0.75rem; color: #6a737d; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; padding-left: 0.75rem; }
+        nav ul { list-style: none; padding: 0; margin: 0; }
+        nav li { margin-bottom: 0.25rem; }
+        nav a { text-decoration: none; color: #586069; font-size: 0.9rem; padding: 0.6rem 0.75rem; border-radius: 6px; display: block; transition: all 0.2s; }
+        nav a:hover { background: #f1f8ff; color: var(--primary); }
+        nav a.active { background: #f1f8ff; color: var(--primary); font-weight: 600; border-left: 3px solid var(--primary); border-radius: 0 6px 6px 0; }
+
+        /* Main Content Styles */
+        main { flex-grow: 1; padding: 3rem 4rem; max-width: 1200px; }
+        header { margin-bottom: 3rem; }
+        header h1 { font-size: 2.2rem; font-weight: 800; margin: 0; color: #000; letter-spacing: -0.5px; }
+        header p { color: #6a737d; font-size: 1.1rem; margin-top: 0.5rem; }
+
+        .repo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+        .repo-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); display: flex; flex-direction: column; text-decoration: none; color: inherit; position: relative; }
+        .repo-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
+        .repo-name { color: var(--primary); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem; word-break: break-all; }
+        .repo-desc { font-size: 0.95rem; color: #586069; line-height: 1.5; margin-bottom: 1.5rem; flex-grow: 1; }
+        .repo-footer { display: flex; align-items: center; justify-content: space-between; }
+        .tag { font-size: 0.65rem; background: #f1f8ff; color: var(--primary); padding: 3px 10px; border-radius: 20px; font-weight: 700; text-transform: uppercase; border: 1px solid #c8e1ff; }
+
+        @media (max-width: 1000px) { main { padding: 2rem; } }
+        @media (max-width: 800px) { body { flex-direction: column; } nav { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 1.5rem; } nav ul { display: flex; flex-wrap: wrap; gap: 0.5rem; } nav li { margin: 0; } }
     </style>
 </head>
 <body>
-    <div class="org-header">
-        <h1>ORGANVM: meta-organvm</h1>
-        <p>Comprehensive repository directory for the meta-organvm collective.</p>
-    </div>
-    <ul>
-        <li><a class="repo-link" href="/.github/">.github</a><div class="desc"></div><div class="footer-meta"><span class="tag">Live Docs</span></div></li>
-        <li><a class="repo-link" href="/alchemia-ingestvm/">alchemia-ingestvm</a><div class="desc"></div><div class="footer-meta"><span class="tag">Live Docs</span></div></li>
-        <li><a class="repo-link" href="/meta-organvm--superproject/">meta-organvm--superproject</a><div class="desc"></div><div class="footer-meta"><span class="tag">Live Docs</span></div></li>
-        <li><a class="repo-link" href="/organvm-corpvs-testamentvm/">organvm-corpvs-testamentvm</a><div class="desc"></div><div class="footer-meta"><span class="tag">Live Docs</span></div></li>
-        <li><a class="repo-link" href="/organvm-engine/">organvm-engine</a><div class="desc"></div><div class="footer-meta"><span class="tag">Live Docs</span></div></li>
-        <li><a class="repo-link" href="/organvm-mcp-server/">organvm-mcp-server</a><div class="desc"></div><div class="footer-meta"><span class="tag">Live Docs</span></div></li>
-        <li><a class="repo-link" href="/schema-definitions/">schema-definitions</a><div class="desc"></div><div class="footer-meta"><span class="tag">Live Docs</span></div></li>
-        <li><a class="repo-link" href="/system-dashboard/">system-dashboard</a><div class="desc"></div><div class="footer-meta"><span class="tag">Live Docs</span></div></li>
-    </ul>
-    <footer>
-        Managed by ORGANVM Brahma | System Sync: 2026-03-03
-    </footer>
+    <nav>
+        <h2>ORGANVM Ecosystem</h2>
+        <ul>
+            <li><a href="https://organvm-i-theoria.github.io/" class="">ORGAN-I (Theoria)</a></li>
+            <li><a href="https://organvm-ii-poiesis.github.io/" class="">ORGAN-II (Poiesis)</a></li>
+            <li><a href="https://organvm-iii-ergon.github.io/" class="">ORGAN-III (Ergon)</a></li>
+            <li><a href="https://organvm-iv-taxis.github.io/" class="">ORGAN-IV (Taxis)</a></li>
+            <li><a href="https://organvm-v-logos.github.io/" class="">ORGAN-V (Logos)</a></li>
+            <li><a href="https://organvm-vi-koinonia.github.io/" class="">ORGAN-VI (Koinonia)</a></li>
+            <li><a href="https://organvm-vii-kerygma.github.io/" class="">ORGAN-VII (Kerygma)</a></li>
+            <li><a href="https://meta-organvm.github.io/" class="active">META-ORGANVM</a></li>
+            <li><a href="https://4444J99.github.io/" class="">Personal Profile</a></li>
+        </ul>
+    </nav>
+    <main>
+        <header>
+            <h1>META-ORGANVM</h1>
+            <p>Integrated repository directory for the <strong>meta-organvm</strong> collective.</p>
+        </header>
+        <div class="repo-grid">
+            <a href="/.github/" class="repo-card">
+                <span class="repo-name">.github</span>
+                <p class="repo-desc">Organization profile and community health files for meta-organvm.</p>
+                <div class="repo-footer"><span class="tag">Live Documentation</span></div>
+            </a>
+            <a href="/alchemia-ingestvm/" class="repo-card">
+                <span class="repo-name">alchemia-ingestvm</span>
+                <p class="repo-desc">The Alchemical Forge — Material ingestion pipeline + aesthetic nervous system for the ORGAN system.</p>
+                <div class="repo-footer"><span class="tag">Live Documentation</span></div>
+            </a>
+            <a href="/meta-organvm--superproject/" class="repo-card">
+                <span class="repo-name">meta-organvm--superproject</span>
+                <p class="repo-desc">Superproject tracking submodules for meta-organvm.</p>
+                <div class="repo-footer"><span class="tag">Live Documentation</span></div>
+            </a>
+            <a href="/organvm-corpvs-testamentvm/" class="repo-card">
+                <span class="repo-name">organvm-corpvs-testamentvm</span>
+                <p class="repo-desc">The authoritative planning and governance corpus for the eight-organ creative-institutional system.</p>
+                <div class="repo-footer"><span class="tag">Live Documentation</span></div>
+            </a>
+            <a href="/organvm-engine/" class="repo-card">
+                <span class="repo-name">organvm-engine</span>
+                <p class="repo-desc">Core Python package — governance, registry, orchestration, and CLI for the eight-organ system.</p>
+                <div class="repo-footer"><span class="tag">Live Documentation</span></div>
+            </a>
+            <a href="/organvm-mcp-server/" class="repo-card">
+                <span class="repo-name">organvm-mcp-server</span>
+                <p class="repo-desc">MCP server exposing ORGANVM system context to any Claude Code session.</p>
+                <div class="repo-footer"><span class="tag">Live Documentation</span></div>
+            </a>
+            <a href="/schema-definitions/" class="repo-card">
+                <span class="repo-name">schema-definitions</span>
+                <p class="repo-desc">Canonical JSON Schema definitions for the eight-organ organvm system data contracts.</p>
+                <div class="repo-footer"><span class="tag">Live Documentation</span></div>
+            </a>
+            <a href="/system-dashboard/" class="repo-card">
+                <span class="repo-name">system-dashboard</span>
+                <p class="repo-desc">Live system health dashboard — FastAPI + HTMX with brutalist CMYK design.</p>
+                <div class="repo-footer"><span class="tag">Live Documentation</span></div>
+            </a>
+        </div>
+        <footer style="margin-top: 6rem; padding-top: 2rem; border-top: 1px solid var(--border); color: #999; font-size: 0.8rem; text-align: center;">
+            ORGANVM Distributed Intelligence | System Synchronization: 2026-03-03
+        </footer>
+    </main>
 </body>
 </html>
